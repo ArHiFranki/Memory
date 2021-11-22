@@ -12,6 +12,14 @@ public class SceneController : MonoBehaviour
     [SerializeField] private MemoryCard _originalCard;
     [SerializeField] private Sprite[] _images;
 
+    private MemoryCard _firstRevealed;
+    private MemoryCard _secondRevealed;
+
+    public bool CanReveal 
+    { 
+        get { return _secondRevealed == null; } 
+    }
+
     private void Start()
     {
         Vector3 startPosition = _originalCard.transform.position;
@@ -58,5 +66,18 @@ public class SceneController : MonoBehaviour
         }
 
         return newArray;
+    }
+
+    public void CardRevealed(MemoryCard card)
+    {
+        if (_firstRevealed == null)
+        {
+            _firstRevealed = card;
+        }
+        else
+        {
+            _secondRevealed = card;
+            Debug.Log("Match? " + (_firstRevealed.Id == _secondRevealed.Id));
+        }
     }
 }
