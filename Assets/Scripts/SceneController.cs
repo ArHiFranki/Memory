@@ -14,6 +14,7 @@ public class SceneController : MonoBehaviour
 
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
+    private int _score = 0;
 
     public bool CanReveal 
     { 
@@ -77,7 +78,26 @@ public class SceneController : MonoBehaviour
         else
         {
             _secondRevealed = card;
-            Debug.Log("Match? " + (_firstRevealed.Id == _secondRevealed.Id));
+            StartCoroutine(CheckMatch());
         }
+    }
+
+    private IEnumerator CheckMatch()
+    {
+        if (_firstRevealed.Id == _secondRevealed.Id)
+        {
+            _score++;
+            Debug.Log("Score: " + _score);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            _firstRevealed.Unreveal();
+            _secondRevealed.Unreveal();
+        }
+
+        _firstRevealed = null;
+        _secondRevealed = null;
     }
 }
